@@ -26,16 +26,16 @@
           "additionalProperties": false
         },
         "batchSize": {
-          "description": "The maximum number of records in each batch that Lambda pulls from your stream\nor queue and sends to your function. Lambda passes all of the records in\nthe batch to the function in a single call, up to the payload limit for synchronous\ninvocation (6 MB).\n\n  - Amazon Kinesis \u2013 Default 100. Max 10,000.\n\n  - Amazon DynamoDB Streams \u2013 Default 100. Max 10,000.\n\n  - Amazon Simple Queue Service \u2013 Default 10. For standard queues the\n    max is 10,000. For FIFO queues the max is 10.\n\n  - Amazon Managed Streaming for Apache Kafka \u2013 Default 100. Max 10,000.\n\n  - Self-managed Apache Kafka \u2013 Default 100. Max 10,000.\n\n  - Amazon MQ (ActiveMQ and RabbitMQ) \u2013 Default 100. Max 10,000.",
+          "description": "The maximum number of records in each batch that Lambda pulls from your stream\nor queue and sends to your function. Lambda passes all of the records in\nthe batch to the function in a single call, up to the payload limit for synchronous\ninvocation (6 MB).\n\n  - Amazon Kinesis \u2013 Default 100. Max 10,000.\n\n  - Amazon DynamoDB Streams \u2013 Default 100. Max 10,000.\n\n  - Amazon Simple Queue Service \u2013 Default 10. For standard queues the\n    max is 10,000. For FIFO queues the max is 10.\n\n  - Amazon Managed Streaming for Apache Kafka \u2013 Default 100. Max 10,000.\n\n  - Self-managed Apache Kafka \u2013 Default 100. Max 10,000.\n\n  - Amazon MQ (ActiveMQ and RabbitMQ) \u2013 Default 100. Max 10,000.\n\n  - DocumentDB \u2013 Default 100. Max 10,000.",
           "format": "int64",
           "type": "integer"
         },
         "bisectBatchOnFunctionError": {
-          "description": "(Streams only) If the function returns an error, split the batch in two and\nretry.",
+          "description": "(Kinesis and DynamoDB Streams only) If the function returns an error, split\nthe batch in two and retry.",
           "type": "boolean"
         },
         "destinationConfig": {
-          "description": "(Streams only) An Amazon SQS queue or Amazon SNS topic destination for discarded\nrecords.",
+          "description": "(Kinesis, DynamoDB Streams, Amazon MSK, and self-managed Kafka only) A configuration\nobject that specifies the destination of an event after Lambda processes\nit.",
           "properties": {
             "onFailure": {
               "description": "A destination for events that failed processing.",
@@ -48,7 +48,7 @@
               "additionalProperties": false
             },
             "onSuccess": {
-              "description": "A destination for events that were processed successfully.",
+              "description": "A destination for events that were processed successfully.\n\nTo retain records of successful asynchronous invocations (https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html#invocation-async-destinations),\nyou can configure an Amazon SNS topic, Amazon SQS queue, Lambda function,\nor Amazon EventBridge event bus as the destination.",
               "properties": {
                 "destination": {
                   "type": "string"
@@ -66,7 +66,7 @@
           "type": "boolean"
         },
         "eventSourceARN": {
-          "description": "The Amazon Resource Name (ARN) of the event source.\n\n  - Amazon Kinesis \u2013 The ARN of the data stream or a stream consumer.\n\n  - Amazon DynamoDB Streams \u2013 The ARN of the stream.\n\n  - Amazon Simple Queue Service \u2013 The ARN of the queue.\n\n  - Amazon Managed Streaming for Apache Kafka \u2013 The ARN of the cluster.\n\n  - Amazon MQ \u2013 The ARN of the broker.",
+          "description": "The Amazon Resource Name (ARN) of the event source.\n\n  - Amazon Kinesis \u2013 The ARN of the data stream or a stream consumer.\n\n  - Amazon DynamoDB Streams \u2013 The ARN of the stream.\n\n  - Amazon Simple Queue Service \u2013 The ARN of the queue.\n\n  - Amazon Managed Streaming for Apache Kafka \u2013 The ARN of the cluster\n    or the ARN of the VPC connection (for cross-account event source mappings\n    (https://docs.aws.amazon.com/lambda/latest/dg/with-msk.html#msk-multi-vpc)).\n\n  - Amazon MQ \u2013 The ARN of the broker.\n\n  - Amazon DocumentDB \u2013 The ARN of the DocumentDB change stream.\n\nRegex Pattern: `^arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.*)$`",
           "type": "string"
         },
         "eventSourceRef": {
@@ -110,7 +110,7 @@
           "additionalProperties": false
         },
         "functionName": {
-          "description": "The name of the Lambda function.\n\nName formats\n\n  - Function name \u2013 MyFunction.\n\n  - Function ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:MyFunction.\n\n  - Version or Alias ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:MyFunction:PROD.\n\n  - Partial ARN \u2013 123456789012:function:MyFunction.\n\nThe length constraint applies only to the full ARN. If you specify only the\nfunction name, it's limited to 64 characters in length.",
+          "description": "The name or ARN of the Lambda function.\n\nName formats\n\n  - Function name \u2013 MyFunction.\n\n  - Function ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:MyFunction.\n\n  - Version or Alias ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:MyFunction:PROD.\n\n  - Partial ARN \u2013 123456789012:function:MyFunction.\n\nThe length constraint applies only to the full ARN. If you specify only the\nfunction name, it's limited to 64 characters in length.\n\nRegex Pattern: `^(arn:(aws[a-zA-Z-]*)?:lambda:)?([a-z]{2}(-gov)?-[a-z]+-\\d{1}:)?(\\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\\$LATEST|[a-zA-Z0-9-_]+))?$`",
           "type": "string"
         },
         "functionRef": {
@@ -134,29 +134,29 @@
           "additionalProperties": false
         },
         "functionResponseTypes": {
-          "description": "(Streams and Amazon SQS) A list of current response type enums applied to\nthe event source mapping.",
+          "description": "(Kinesis, DynamoDB Streams, and Amazon SQS) A list of current response type\nenums applied to the event source mapping.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "maximumBatchingWindowInSeconds": {
-          "description": "The maximum amount of time, in seconds, that Lambda spends gathering records\nbefore invoking the function. You can configure MaximumBatchingWindowInSeconds\nto any value from 0 seconds to 300 seconds in increments of seconds.\n\nFor streams and Amazon SQS event sources, the default batching window is\n0 seconds. For Amazon MSK, Self-managed Apache Kafka, and Amazon MQ event\nsources, the default batching window is 500 ms. Note that because you can\nonly change MaximumBatchingWindowInSeconds in increments of seconds, you\ncannot revert back to the 500 ms default batching window after you have changed\nit. To restore the default batching window, you must create a new event source\nmapping.\n\nRelated setting: For streams and Amazon SQS event sources, when you set BatchSize\nto a value greater than 10, you must set MaximumBatchingWindowInSeconds to\nat least 1.",
+          "description": "The maximum amount of time, in seconds, that Lambda spends gathering records\nbefore invoking the function. You can configure MaximumBatchingWindowInSeconds\nto any value from 0 seconds to 300 seconds in increments of seconds.\n\nFor Kinesis, DynamoDB, and Amazon SQS event sources, the default batching\nwindow is 0 seconds. For Amazon MSK, Self-managed Apache Kafka, Amazon MQ,\nand DocumentDB event sources, the default batching window is 500 ms. Note\nthat because you can only change MaximumBatchingWindowInSeconds in increments\nof seconds, you cannot revert back to the 500 ms default batching window\nafter you have changed it. To restore the default batching window, you must\ncreate a new event source mapping.\n\nRelated setting: For Kinesis, DynamoDB, and Amazon SQS event sources, when\nyou set BatchSize to a value greater than 10, you must set MaximumBatchingWindowInSeconds\nto at least 1.",
           "format": "int64",
           "type": "integer"
         },
         "maximumRecordAgeInSeconds": {
-          "description": "(Streams only) Discard records older than the specified age. The default\nvalue is infinite (-1).",
+          "description": "(Kinesis and DynamoDB Streams only) Discard records older than the specified\nage. The default value is infinite (-1).",
           "format": "int64",
           "type": "integer"
         },
         "maximumRetryAttempts": {
-          "description": "(Streams only) Discard records after the specified number of retries. The\ndefault value is infinite (-1). When set to infinite (-1), failed records\nare retried until the record expires.",
+          "description": "(Kinesis and DynamoDB Streams only) Discard records after the specified number\nof retries. The default value is infinite (-1). When set to infinite (-1),\nfailed records are retried until the record expires.",
           "format": "int64",
           "type": "integer"
         },
         "parallelizationFactor": {
-          "description": "(Streams only) The number of batches to process from each shard concurrently.",
+          "description": "(Kinesis and DynamoDB Streams only) The number of batches to process from\neach shard concurrently.",
           "format": "int64",
           "type": "integer"
         },
@@ -245,11 +245,11 @@
           "type": "array"
         },
         "startingPosition": {
-          "description": "The position in a stream from which to start reading. Required for Amazon\nKinesis, Amazon DynamoDB, and Amazon MSK Streams sources. AT_TIMESTAMP is\nsupported only for Amazon Kinesis streams.",
+          "description": "The position in a stream from which to start reading. Required for Amazon\nKinesis and Amazon DynamoDB Stream event sources. AT_TIMESTAMP is supported\nonly for Amazon Kinesis streams, Amazon DocumentDB, Amazon MSK, and self-managed\nApache Kafka.",
           "type": "string"
         },
         "startingPositionTimestamp": {
-          "description": "With StartingPosition set to AT_TIMESTAMP, the time from which to start reading.",
+          "description": "With StartingPosition set to AT_TIMESTAMP, the time from which to start reading.\nStartingPositionTimestamp cannot be in the future.",
           "format": "date-time",
           "type": "string"
         },
@@ -261,7 +261,7 @@
           "type": "array"
         },
         "tumblingWindowInSeconds": {
-          "description": "(Streams only) The duration in seconds of a processing window. The range\nis between 1 second and 900 seconds.",
+          "description": "(Kinesis and DynamoDB Streams only) The duration in seconds of a processing\nwindow for DynamoDB and Kinesis Streams event sources. A value of 0 seconds\nindicates no tumbling window.",
           "format": "int64",
           "type": "integer"
         }
@@ -296,7 +296,7 @@
           "additionalProperties": false
         },
         "conditions": {
-          "description": "All CRS managed by ACK have a common `Status.Conditions` member that\ncontains a collection of `ackv1alpha1.Condition` objects that describe\nthe various terminal states of the CR and its backend AWS service API\nresource",
+          "description": "All CRs managed by ACK have a common `Status.Conditions` member that\ncontains a collection of `ackv1alpha1.Condition` objects that describe\nthe various terminal states of the CR and its backend AWS service API\nresource",
           "items": {
             "description": "Condition is the common struct used by all CRDs managed by ACK service\ncontrollers to indicate terminal states  of the CR and its backend AWS\nservice API resource",
             "properties": {
@@ -332,7 +332,7 @@
           "type": "array"
         },
         "functionARN": {
-          "description": "The ARN of the Lambda function.",
+          "description": "The ARN of the Lambda function.\n\nRegex Pattern: `^arn:(aws[a-zA-Z-]*)?:lambda:[a-z]{2}(-gov)?-[a-z]+-\\d{1}:\\d{12}:function:[a-zA-Z0-9-_]+(:(\\$LATEST|[a-zA-Z0-9-_]+))?$`",
           "type": "string"
         },
         "lastModified": {

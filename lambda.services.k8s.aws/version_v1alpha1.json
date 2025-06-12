@@ -38,7 +38,7 @@
                   "additionalProperties": false
                 },
                 "onSuccess": {
-                  "description": "A destination for events that were processed successfully.",
+                  "description": "A destination for events that were processed successfully.\n\nTo retain records of successful asynchronous invocations (https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html#invocation-async-destinations),\nyou can configure an Amazon SNS topic, Amazon SQS queue, Lambda function,\nor Amazon EventBridge event bus as the destination.",
                   "properties": {
                     "destination": {
                       "type": "string"
@@ -70,7 +70,7 @@
           "additionalProperties": false
         },
         "functionName": {
-          "description": "The name of the Lambda function.\n\nName formats\n\n  - Function name - MyFunction.\n\n  - Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction.\n\n  - Partial ARN - 123456789012:function:MyFunction.\n\nThe length constraint applies only to the full ARN. If you specify only the\nfunction name, it is limited to 64 characters in length.",
+          "description": "The name or ARN of the Lambda function.\n\nName formats\n\n  - Function name - MyFunction.\n\n  - Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction.\n\n  - Partial ARN - 123456789012:function:MyFunction.\n\nThe length constraint applies only to the full ARN. If you specify only the\nfunction name, it is limited to 64 characters in length.\n\nRegex Pattern: `^(arn:(aws[a-zA-Z-]*)?:lambda:)?([a-z]{2}(-gov)?-[a-z]+-\\d{1}:)?(\\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\\$LATEST|[a-zA-Z0-9-_]+))?$`",
           "type": "string"
         },
         "functionRef": {
@@ -156,7 +156,7 @@
           "type": "integer"
         },
         "conditions": {
-          "description": "All CRS managed by ACK have a common `Status.Conditions` member that\ncontains a collection of `ackv1alpha1.Condition` objects that describe\nthe various terminal states of the CR and its backend AWS service API\nresource",
+          "description": "All CRs managed by ACK have a common `Status.Conditions` member that\ncontains a collection of `ackv1alpha1.Condition` objects that describe\nthe various terminal states of the CR and its backend AWS service API\nresource",
           "items": {
             "description": "Condition is the common struct used by all CRDs managed by ACK service\ncontrollers to indicate terminal states  of the CR and its backend AWS\nservice API resource",
             "properties": {
@@ -228,7 +228,7 @@
           "additionalProperties": false
         },
         "ephemeralStorage": {
-          "description": "The size of the function\u2019s /tmp directory in MB. The default value is 512,\nbut it can be any whole number between 512 and 10,240 MB.",
+          "description": "The size of the function's /tmp directory in MB. The default value is 512,\nbut can be any whole number between 512 and 10,240 MB. For more information,\nsee Configuring ephemeral storage (console) (https://docs.aws.amazon.com/lambda/latest/dg/configuration-function-common.html#configuration-ephemeral-storage).",
           "properties": {
             "size": {
               "format": "int64",
@@ -256,11 +256,11 @@
           "type": "array"
         },
         "functionARN": {
-          "description": "The function's Amazon Resource Name (ARN).",
+          "description": "The function's Amazon Resource Name (ARN).\n\nRegex Pattern: `^arn:(aws[a-zA-Z-]*)?:lambda:[a-z]{2}(-gov)?-[a-z]+-\\d{1}:\\d{12}:function:[a-zA-Z0-9-_\\.]+(:(\\$LATEST|[a-zA-Z0-9-_]+))?$`",
           "type": "string"
         },
         "handler": {
-          "description": "The function that Lambda calls to begin running your function.",
+          "description": "The function that Lambda calls to begin running your function.\n\nRegex Pattern: `^[^\\s]+$`",
           "type": "string"
         },
         "imageConfigResponse": {
@@ -306,7 +306,7 @@
           "additionalProperties": false
         },
         "kmsKeyARN": {
-          "description": "The KMS key that's used to encrypt the function's environment variables.\nThis key is returned only if you've configured a customer managed key.",
+          "description": "The ARN of the Key Management Service (KMS) customer managed key that's used\nto encrypt the following resources:\n\n   * The function's environment variables (https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-encryption).\n\n   * The function's Lambda SnapStart (https://docs.aws.amazon.com/lambda/latest/dg/snapstart-security.html)\n   snapshots.\n\n   * When used with SourceKMSKeyArn, the unzipped version of the .zip deployment\n   package that's used for function invocations. For more information, see\n   Specifying a customer managed key for Lambda (https://docs.aws.amazon.com/lambda/latest/dg/encrypt-zip-package.html#enable-zip-custom-encryption).\n\n   * The optimized version of the container image that's used for function\n   invocations. Note that this is not the same key that's used to protect\n   your container image in the Amazon Elastic Container Registry (Amazon\n   ECR). For more information, see Function lifecycle (https://docs.aws.amazon.com/lambda/latest/dg/images-create.html#images-lifecycle).\n\nIf you don't provide a customer managed key, Lambda uses an Amazon Web Services\nowned key (https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk)\nor an Amazon Web Services managed key (https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk).\n\nRegex Pattern: `^(arn:(aws[a-zA-Z-]*)?:[a-z0-9-.]+:.*)|()$`",
           "type": "string"
         },
         "lastModified": {
@@ -350,7 +350,7 @@
           "type": "array"
         },
         "masterARN": {
-          "description": "For Lambda@Edge functions, the ARN of the main function.",
+          "description": "For Lambda@Edge functions, the ARN of the main function.\n\nRegex Pattern: `^arn:(aws[a-zA-Z-]*)?:lambda:[a-z]{2}(-gov)?-[a-z]+-\\d{1}:\\d{12}:function:[a-zA-Z0-9-_]+(:(\\$LATEST|[a-zA-Z0-9-_]+))?$`",
           "type": "string"
         },
         "memorySize": {
@@ -363,23 +363,23 @@
           "type": "string"
         },
         "qualifier": {
-          "description": "The version of the Lambda function.",
+          "description": "The version of the Lambda function.\n\nRegex Pattern: `^(\\$LATEST|[0-9]+)$`",
           "type": "string"
         },
         "role": {
-          "description": "The function's execution role.",
+          "description": "The function's execution role.\n\nRegex Pattern: `^arn:(aws[a-zA-Z-]*)?:iam::\\d{12}:role/?[a-zA-Z_0-9+=,.@\\-_/]+$`",
           "type": "string"
         },
         "runtime": {
-          "description": "The runtime environment for the Lambda function.",
+          "description": "The identifier of the function's runtime (https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html).\nRuntime is required if the deployment package is a .zip file archive. Specifying\na runtime results in an error if you're deploying a function using a container\nimage.\n\nThe following list includes deprecated runtimes. Lambda blocks creating new\nfunctions and updating existing functions shortly after each runtime is deprecated.\nFor more information, see Runtime use after deprecation (https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html#runtime-deprecation-levels).\n\nFor a list of all currently supported runtimes, see Supported runtimes (https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html#runtimes-supported).",
           "type": "string"
         },
         "signingJobARN": {
-          "description": "The ARN of the signing job.",
+          "description": "The ARN of the signing job.\n\nRegex Pattern: `^arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.*)$`",
           "type": "string"
         },
         "signingProfileVersionARN": {
-          "description": "The ARN of the signing profile version.",
+          "description": "The ARN of the signing profile version.\n\nRegex Pattern: `^arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.*)$`",
           "type": "string"
         },
         "snapStart": {
@@ -423,12 +423,15 @@
           "additionalProperties": false
         },
         "version": {
-          "description": "The version of the Lambda function.",
+          "description": "The version of the Lambda function.\n\nRegex Pattern: `^(\\$LATEST|[0-9]+)$`",
           "type": "string"
         },
         "vpcConfig": {
           "description": "The function's networking configuration.",
           "properties": {
+            "ipv6AllowedForDualStack": {
+              "type": "boolean"
+            },
             "securityGroupIDs": {
               "items": {
                 "type": "string"
