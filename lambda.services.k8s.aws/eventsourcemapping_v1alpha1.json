@@ -26,7 +26,7 @@
           "additionalProperties": false
         },
         "batchSize": {
-          "description": "The maximum number of records in each batch that Lambda pulls from your stream\nor queue and sends to your function. Lambda passes all of the records in\nthe batch to the function in a single call, up to the payload limit for synchronous\ninvocation (6 MB).\n\n\n  - Amazon Kinesis \u2013 Default 100. Max 10,000.\n\n\n  - Amazon DynamoDB Streams \u2013 Default 100. Max 10,000.\n\n\n  - Amazon Simple Queue Service \u2013 Default 10. For standard queues the\n    max is 10,000. For FIFO queues the max is 10.\n\n\n  - Amazon Managed Streaming for Apache Kafka \u2013 Default 100. Max 10,000.\n\n\n  - Self-managed Apache Kafka \u2013 Default 100. Max 10,000.\n\n\n  - Amazon MQ (ActiveMQ and RabbitMQ) \u2013 Default 100. Max 10,000.",
+          "description": "The maximum number of records in each batch that Lambda pulls from your stream\nor queue and sends to your function. Lambda passes all of the records in\nthe batch to the function in a single call, up to the payload limit for synchronous\ninvocation (6 MB).\n\n  - Amazon Kinesis \u2013 Default 100. Max 10,000.\n\n  - Amazon DynamoDB Streams \u2013 Default 100. Max 10,000.\n\n  - Amazon Simple Queue Service \u2013 Default 10. For standard queues the\n    max is 10,000. For FIFO queues the max is 10.\n\n  - Amazon Managed Streaming for Apache Kafka \u2013 Default 100. Max 10,000.\n\n  - Self-managed Apache Kafka \u2013 Default 100. Max 10,000.\n\n  - Amazon MQ (ActiveMQ and RabbitMQ) \u2013 Default 100. Max 10,000.",
           "format": "int64",
           "type": "integer"
         },
@@ -62,20 +62,23 @@
           "additionalProperties": false
         },
         "enabled": {
-          "description": "When true, the event source mapping is active. When false, Lambda pauses\npolling and invocation.\n\n\nDefault: True",
+          "description": "When true, the event source mapping is active. When false, Lambda pauses\npolling and invocation.\n\nDefault: True",
           "type": "boolean"
         },
         "eventSourceARN": {
-          "description": "The Amazon Resource Name (ARN) of the event source.\n\n\n  - Amazon Kinesis \u2013 The ARN of the data stream or a stream consumer.\n\n\n  - Amazon DynamoDB Streams \u2013 The ARN of the stream.\n\n\n  - Amazon Simple Queue Service \u2013 The ARN of the queue.\n\n\n  - Amazon Managed Streaming for Apache Kafka \u2013 The ARN of the cluster.\n\n\n  - Amazon MQ \u2013 The ARN of the broker.",
+          "description": "The Amazon Resource Name (ARN) of the event source.\n\n  - Amazon Kinesis \u2013 The ARN of the data stream or a stream consumer.\n\n  - Amazon DynamoDB Streams \u2013 The ARN of the stream.\n\n  - Amazon Simple Queue Service \u2013 The ARN of the queue.\n\n  - Amazon Managed Streaming for Apache Kafka \u2013 The ARN of the cluster.\n\n  - Amazon MQ \u2013 The ARN of the broker.",
           "type": "string"
         },
         "eventSourceRef": {
-          "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\n\tfrom:\n\t  name: my-api",
+          "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t  name: my-api",
           "properties": {
             "from": {
               "description": "AWSResourceReference provides all the values necessary to reference another\nk8s resource for finding the identifier(Id/ARN/Name)",
               "properties": {
                 "name": {
+                  "type": "string"
+                },
+                "namespace": {
                   "type": "string"
                 }
               },
@@ -107,16 +110,19 @@
           "additionalProperties": false
         },
         "functionName": {
-          "description": "The name of the Lambda function.\n\n\nName formats\n\n\n  - Function name \u2013 MyFunction.\n\n\n  - Function ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:MyFunction.\n\n\n  - Version or Alias ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:MyFunction:PROD.\n\n\n  - Partial ARN \u2013 123456789012:function:MyFunction.\n\n\nThe length constraint applies only to the full ARN. If you specify only the\nfunction name, it's limited to 64 characters in length.",
+          "description": "The name of the Lambda function.\n\nName formats\n\n  - Function name \u2013 MyFunction.\n\n  - Function ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:MyFunction.\n\n  - Version or Alias ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:MyFunction:PROD.\n\n  - Partial ARN \u2013 123456789012:function:MyFunction.\n\nThe length constraint applies only to the full ARN. If you specify only the\nfunction name, it's limited to 64 characters in length.",
           "type": "string"
         },
         "functionRef": {
-          "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\n\tfrom:\n\t  name: my-api",
+          "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t  name: my-api",
           "properties": {
             "from": {
               "description": "AWSResourceReference provides all the values necessary to reference another\nk8s resource for finding the identifier(Id/ARN/Name)",
               "properties": {
                 "name": {
+                  "type": "string"
+                },
+                "namespace": {
                   "type": "string"
                 }
               },
@@ -135,7 +141,7 @@
           "type": "array"
         },
         "maximumBatchingWindowInSeconds": {
-          "description": "The maximum amount of time, in seconds, that Lambda spends gathering records\nbefore invoking the function. You can configure MaximumBatchingWindowInSeconds\nto any value from 0 seconds to 300 seconds in increments of seconds.\n\n\nFor streams and Amazon SQS event sources, the default batching window is\n0 seconds. For Amazon MSK, Self-managed Apache Kafka, and Amazon MQ event\nsources, the default batching window is 500 ms. Note that because you can\nonly change MaximumBatchingWindowInSeconds in increments of seconds, you\ncannot revert back to the 500 ms default batching window after you have changed\nit. To restore the default batching window, you must create a new event source\nmapping.\n\n\nRelated setting: For streams and Amazon SQS event sources, when you set BatchSize\nto a value greater than 10, you must set MaximumBatchingWindowInSeconds to\nat least 1.",
+          "description": "The maximum amount of time, in seconds, that Lambda spends gathering records\nbefore invoking the function. You can configure MaximumBatchingWindowInSeconds\nto any value from 0 seconds to 300 seconds in increments of seconds.\n\nFor streams and Amazon SQS event sources, the default batching window is\n0 seconds. For Amazon MSK, Self-managed Apache Kafka, and Amazon MQ event\nsources, the default batching window is 500 ms. Note that because you can\nonly change MaximumBatchingWindowInSeconds in increments of seconds, you\ncannot revert back to the 500 ms default batching window after you have changed\nit. To restore the default batching window, you must create a new event source\nmapping.\n\nRelated setting: For streams and Amazon SQS event sources, when you set BatchSize\nto a value greater than 10, you must set MaximumBatchingWindowInSeconds to\nat least 1.",
           "format": "int64",
           "type": "integer"
         },
@@ -156,12 +162,15 @@
         },
         "queueRefs": {
           "items": {
-            "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\n\tfrom:\n\t  name: my-api",
+            "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t  name: my-api",
             "properties": {
               "from": {
                 "description": "AWSResourceReference provides all the values necessary to reference another\nk8s resource for finding the identifier(Id/ARN/Name)",
                 "properties": {
                   "name": {
+                    "type": "string"
+                  },
+                  "namespace": {
                     "type": "string"
                   }
                 },
@@ -267,7 +276,7 @@
           "description": "All CRs managed by ACK have a common `Status.ACKResourceMetadata` member\nthat is used to contain resource sync state, account ownership,\nconstructed ARN for the resource",
           "properties": {
             "arn": {
-              "description": "ARN is the Amazon Resource Name for the resource. This is a\nglobally-unique identifier and is set only by the ACK service controller\nonce the controller has orchestrated the creation of the resource OR\nwhen it has verified that an \"adopted\" resource (a resource where the\nARN annotation was set by the Kubernetes user on the CR) exists and\nmatches the supplied CR's Spec field values.\nTODO(vijat@): Find a better strategy for resources that do not have ARN in CreateOutputResponse\nhttps://github.com/aws/aws-controllers-k8s/issues/270",
+              "description": "ARN is the Amazon Resource Name for the resource. This is a\nglobally-unique identifier and is set only by the ACK service controller\nonce the controller has orchestrated the creation of the resource OR\nwhen it has verified that an \"adopted\" resource (a resource where the\nARN annotation was set by the Kubernetes user on the CR) exists and\nmatches the supplied CR's Spec field values.\nhttps://github.com/aws/aws-controllers-k8s/issues/270",
               "type": "string"
             },
             "ownerAccountID": {

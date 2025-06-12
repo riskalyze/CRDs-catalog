@@ -39,6 +39,9 @@
                   "properties": {
                     "name": {
                       "type": "string"
+                    },
+                    "namespace": {
+                      "type": "string"
                     }
                   },
                   "type": "object",
@@ -52,6 +55,9 @@
               "type": "string"
             },
             "s3ObjectVersion": {
+              "type": "string"
+            },
+            "sha256": {
               "type": "string"
             },
             "zipFile": {
@@ -122,7 +128,7 @@
           "type": "array"
         },
         "functionEventInvokeConfig": {
-          "description": "Configures options for asynchronous invocation on a function.\n\n\n- DestinationConfig\nA destination for events after they have been sent to a function for processing.\n\n\nTypes of Destinations:\nFunction - The Amazon Resource Name (ARN) of a Lambda function.\nQueue - The ARN of a standard SQS queue.\nTopic - The ARN of a standard SNS topic.\nEvent Bus - The ARN of an Amazon EventBridge event bus.\n\n\n- MaximumEventAgeInSeconds\nThe maximum age of a request that Lambda sends to a function for processing.\n\n\n- MaximumRetryAttempts\nThe maximum number of times to retry when the function returns an error.",
+          "description": "Configures options for asynchronous invocation on a function.\n\n- DestinationConfig\nA destination for events after they have been sent to a function for processing.\n\nTypes of Destinations:\nFunction - The Amazon Resource Name (ARN) of a Lambda function.\nQueue - The ARN of a standard SQS queue.\nTopic - The ARN of a standard SNS topic.\nEvent Bus - The ARN of an Amazon EventBridge event bus.\n\n- MaximumEventAgeInSeconds\nThe maximum age of a request that Lambda sends to a function for processing.\n\n- MaximumRetryAttempts\nThe maximum number of times to retry when the function returns an error.",
           "properties": {
             "destinationConfig": {
               "description": "A configuration object that specifies the destination of an event after Lambda\nprocesses it.",
@@ -200,12 +206,15 @@
           "type": "string"
         },
         "kmsKeyRef": {
-          "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\n\tfrom:\n\t  name: my-api",
+          "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t  name: my-api",
           "properties": {
             "from": {
               "description": "AWSResourceReference provides all the values necessary to reference another\nk8s resource for finding the identifier(Id/ARN/Name)",
               "properties": {
                 "name": {
+                  "type": "string"
+                },
+                "namespace": {
                   "type": "string"
                 }
               },
@@ -229,7 +238,7 @@
           "type": "integer"
         },
         "name": {
-          "description": "The name of the Lambda function.\n\n\nName formats\n\n\n  - Function name \u2013 my-function.\n\n\n  - Function ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:my-function.\n\n\n  - Partial ARN \u2013 123456789012:function:my-function.\n\n\nThe length constraint applies only to the full ARN. If you specify only the\nfunction name, it is limited to 64 characters in length.",
+          "description": "The name of the Lambda function.\n\nName formats\n\n  - Function name \u2013 my-function.\n\n  - Function ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:my-function.\n\n  - Partial ARN \u2013 123456789012:function:my-function.\n\nThe length constraint applies only to the full ARN. If you specify only the\nfunction name, it is limited to 64 characters in length.",
           "type": "string"
         },
         "packageType": {
@@ -250,12 +259,15 @@
           "type": "string"
         },
         "roleRef": {
-          "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\n\tfrom:\n\t  name: my-api",
+          "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t  name: my-api",
           "properties": {
             "from": {
               "description": "AWSResourceReference provides all the values necessary to reference another\nk8s resource for finding the identifier(Id/ARN/Name)",
               "properties": {
                 "name": {
+                  "type": "string"
+                },
+                "namespace": {
                   "type": "string"
                 }
               },
@@ -314,12 +326,15 @@
             "securityGroupRefs": {
               "description": "Reference field for SecurityGroupIDs",
               "items": {
-                "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\n\tfrom:\n\t  name: my-api",
+                "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t  name: my-api",
                 "properties": {
                   "from": {
                     "description": "AWSResourceReference provides all the values necessary to reference another\nk8s resource for finding the identifier(Id/ARN/Name)",
                     "properties": {
                       "name": {
+                        "type": "string"
+                      },
+                      "namespace": {
                         "type": "string"
                       }
                     },
@@ -341,12 +356,15 @@
             "subnetRefs": {
               "description": "Reference field for SubnetIDs",
               "items": {
-                "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\n\tfrom:\n\t  name: my-api",
+                "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t  name: my-api",
                 "properties": {
                   "from": {
                     "description": "AWSResourceReference provides all the values necessary to reference another\nk8s resource for finding the identifier(Id/ARN/Name)",
                     "properties": {
                       "name": {
+                        "type": "string"
+                      },
+                      "namespace": {
                         "type": "string"
                       }
                     },
@@ -378,7 +396,7 @@
           "description": "All CRs managed by ACK have a common `Status.ACKResourceMetadata` member\nthat is used to contain resource sync state, account ownership,\nconstructed ARN for the resource",
           "properties": {
             "arn": {
-              "description": "ARN is the Amazon Resource Name for the resource. This is a\nglobally-unique identifier and is set only by the ACK service controller\nonce the controller has orchestrated the creation of the resource OR\nwhen it has verified that an \"adopted\" resource (a resource where the\nARN annotation was set by the Kubernetes user on the CR) exists and\nmatches the supplied CR's Spec field values.\nTODO(vijat@): Find a better strategy for resources that do not have ARN in CreateOutputResponse\nhttps://github.com/aws/aws-controllers-k8s/issues/270",
+              "description": "ARN is the Amazon Resource Name for the resource. This is a\nglobally-unique identifier and is set only by the ACK service controller\nonce the controller has orchestrated the creation of the resource OR\nwhen it has verified that an \"adopted\" resource (a resource where the\nARN annotation was set by the Kubernetes user on the CR) exists and\nmatches the supplied CR's Spec field values.\nhttps://github.com/aws/aws-controllers-k8s/issues/270",
               "type": "string"
             },
             "ownerAccountID": {

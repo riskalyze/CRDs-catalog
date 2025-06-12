@@ -13,7 +13,7 @@
       "type": "object"
     },
     "spec": {
-      "description": "FunctionUrlConfigSpec defines the desired state of FunctionUrlConfig.\n\n\nDetails about a Lambda function URL.",
+      "description": "FunctionUrlConfigSpec defines the desired state of FunctionUrlConfig.\n\nDetails about a Lambda function URL.",
       "properties": {
         "authType": {
           "description": "The type of authentication that your function URL uses. Set to AWS_IAM if\nyou want to restrict access to authenticated IAM users only. Set to NONE\nif you want to bypass IAM authentication to create a public endpoint. For\nmore information, see Security and auth model for Lambda function URLs (https://docs.aws.amazon.com/lambda/latest/dg/urls-auth.html).",
@@ -58,16 +58,19 @@
           "additionalProperties": false
         },
         "functionName": {
-          "description": "The name of the Lambda function.\n\n\nName formats\n\n\n  - Function name \u2013 my-function.\n\n\n  - Function ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:my-function.\n\n\n  - Partial ARN \u2013 123456789012:function:my-function.\n\n\nThe length constraint applies only to the full ARN. If you specify only the\nfunction name, it is limited to 64 characters in length.",
+          "description": "The name of the Lambda function.\n\nName formats\n\n  - Function name \u2013 my-function.\n\n  - Function ARN \u2013 arn:aws:lambda:us-west-2:123456789012:function:my-function.\n\n  - Partial ARN \u2013 123456789012:function:my-function.\n\nThe length constraint applies only to the full ARN. If you specify only the\nfunction name, it is limited to 64 characters in length.",
           "type": "string"
         },
         "functionRef": {
-          "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\n\tfrom:\n\t  name: my-api",
+          "description": "AWSResourceReferenceWrapper provides a wrapper around *AWSResourceReference\ntype to provide more user friendly syntax for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t  name: my-api",
           "properties": {
             "from": {
               "description": "AWSResourceReference provides all the values necessary to reference another\nk8s resource for finding the identifier(Id/ARN/Name)",
               "properties": {
                 "name": {
+                  "type": "string"
+                },
+                "namespace": {
                   "type": "string"
                 }
               },
@@ -96,7 +99,7 @@
           "description": "All CRs managed by ACK have a common `Status.ACKResourceMetadata` member\nthat is used to contain resource sync state, account ownership,\nconstructed ARN for the resource",
           "properties": {
             "arn": {
-              "description": "ARN is the Amazon Resource Name for the resource. This is a\nglobally-unique identifier and is set only by the ACK service controller\nonce the controller has orchestrated the creation of the resource OR\nwhen it has verified that an \"adopted\" resource (a resource where the\nARN annotation was set by the Kubernetes user on the CR) exists and\nmatches the supplied CR's Spec field values.\nTODO(vijat@): Find a better strategy for resources that do not have ARN in CreateOutputResponse\nhttps://github.com/aws/aws-controllers-k8s/issues/270",
+              "description": "ARN is the Amazon Resource Name for the resource. This is a\nglobally-unique identifier and is set only by the ACK service controller\nonce the controller has orchestrated the creation of the resource OR\nwhen it has verified that an \"adopted\" resource (a resource where the\nARN annotation was set by the Kubernetes user on the CR) exists and\nmatches the supplied CR's Spec field values.\nhttps://github.com/aws/aws-controllers-k8s/issues/270",
               "type": "string"
             },
             "ownerAccountID": {
